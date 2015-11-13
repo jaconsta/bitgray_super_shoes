@@ -1,3 +1,92 @@
 from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 
-# Create your views here.
+from .models import Store, Article
+
+def getStoreArticles(storeId):
+    '''
+    Get the articles that belongs to a store from it's Id
+    '''
+    store = getStore(storeId)
+    if store is None:
+        return None
+    articles = Article.objects.filter(store__pk=store)
+    articleJson = map(lambda article: article.toJson(), articles)
+    return articles
+
+def getStore(storeId):
+    '''
+    Check if the store exists and return it's object
+    '''
+    try:
+        store = Store.objects.get(pk=storeId)
+    except ObjectDoesNotExist:
+        store = None
+    return store
+
+def getAllStores():
+    '''
+    Returns a list of all available stores.
+
+    When the table grows in size, optimization is required.
+    '''
+    stores = Store.objects.all()
+    storeJson = map(lambda store: store.toJson(), stores)
+    return list(storeJson)
+
+def getAllArticles():
+    '''
+    Returns a list of all available stores.
+
+    When the table grows in size, optimization is required.
+    '''
+    articles = Article.objects.all()
+    articleJson = map(lambda article: article.toJson(), articles)
+    return list(articleJson)
+
+####################
+####################
+
+def storeIndex(request):
+    '''
+    General management of stores.
+    '''
+    if request.method == 'GET':
+        store = getAllStores()
+        return JsonResponse({'success':True, 'stores': store, 
+                             'total_elements': len(store)})
+    else:
+        return JsonResponse({'success': False, 
+                             'error_code':400, 
+                             'error_msg':'Request methos unavailable.'}, status=400)
+
+def articleIndex(request):
+    '''
+    General management of articles.
+    '''
+    if request.method == 'GET':
+        article = getAllStores()
+        return JsonResponse({'success':True, 'articles': article, 
+                             'total_elements': len(article)})
+    else:
+        return JsonResponse({'success': False, 
+                             'error_code':400, 
+                             'error_msg':'Request methos unavailable.'}, status=400)
+
+def storeArticles(request, storeId):
+    '''
+    Load all the articles from a specific store.
+    '''
+    if request.method == 'GET':
+        article = getStoreArticles(storeId)
+        if article == None:
+            return JsonResponse({'success': False, 
+                                 'error_code':404, 
+                                 'error_msg':'Record not Found.'}, status=404)
+        return JsonResponse({'success':True, 'articles': article, 
+                             'total_elements': len(article)})
+    else:
+        return JsonResponse({'success': False, 
+                             'error_code':400, 
+                             'error_msg':'Request methos unavailable.'}, status=400)

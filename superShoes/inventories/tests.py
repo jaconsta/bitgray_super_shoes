@@ -55,6 +55,7 @@ class ArticleMethosTests(TestCase):
         self.assertEqual(articleResponse.status_code, 200)
 
     def load_store_articles_error_id_is_not_number(self):
+        # By default from the urls Store.id is set to Int then will get 404
         articleResponse = self.client.get(reverse('inventories:storeArticle', kwargs={'app_label': 'noId'}))
         self.assertEqual(articleResponse.status_code, 400)
         self.assertConstains(articleResponse, 'Bad request')
