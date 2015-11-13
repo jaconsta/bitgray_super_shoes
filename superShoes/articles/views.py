@@ -1,19 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-
-from .models import Store, Article
-
-def getStoreArticles(storeId):
-    '''
-    Get the articles that belongs to a store from it's Id
-    '''
-    store = getStore(storeId)
-    if store is None:
-        return None
-    articles = Article.objects.filter(store__pk=store)
-    articleJson = map(lambda article: article.toJson(), articles)
-    return articles
+from .models import Article
+from stores.models import Store
 
 def getStore(storeId):
     '''
@@ -24,16 +13,17 @@ def getStore(storeId):
     except ObjectDoesNotExist:
         store = None
     return store
-
-def getAllStores():
+    
+def getStoreArticles(storeId):
     '''
-    Returns a list of all available stores.
-
-    When the table grows in size, optimization is required.
+    Get the articles that belongs to a store from it's Id
     '''
-    stores = Store.objects.all()
-    storeJson = map(lambda store: store.toJson(), stores)
-    return list(storeJson)
+    store = getStore(storeId)
+    if store is None:
+        return None
+    articles = Article.objects.filter(store__pk=store)
+    articleJson = map(lambda article: article.toJson(), articles)
+    return articles
 
 def getAllArticles():
     '''
@@ -47,19 +37,6 @@ def getAllArticles():
 
 ####################
 ####################
-
-def storeIndex(request):
-    '''
-    General management of stores.
-    '''
-    if request.method == 'GET':
-        store = getAllStores()
-        return JsonResponse({'success':True, 'stores': store, 
-                             'total_elements': len(store)})
-    else:
-        return JsonResponse({'success': False, 
-                             'error_code':400, 
-                             'error_msg':'Request methos unavailable.'}, status=400)
 
 def articleIndex(request):
     '''
@@ -90,3 +67,4 @@ def storeArticles(request, storeId):
         return JsonResponse({'success': False, 
                              'error_code':400, 
                              'error_msg':'Request methos unavailable.'}, status=400)
+
