@@ -1,16 +1,16 @@
 from django.db import models
-from articles.models import Store
+from stores.models import Store
 
 class Article(models.Model):
     '''
     Description of the articles in the inventory.
     '''
     name = models.CharField(max_length=150)
-    description = models.textField()
+    description = models.TextField()
     price = models.FloatField()
     total_in_shelf = models.PositiveIntegerField()
     total_in_vault = models.PositiveIntegerField()
-    store = models.ForeignKey('Store') 
+    store = models.ForeignKey(Store) 
     createdAt = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __str__(self):

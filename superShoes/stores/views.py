@@ -27,7 +27,7 @@ def getAllStores():
 ####################
 ####################
 
-def storeIndex(request):
+def index(request):
     '''
     General management of stores.
     '''

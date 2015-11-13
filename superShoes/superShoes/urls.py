@@ -16,6 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+service_patterns = [	# API urls
+	url(r'^stores/', include('stores.urls')),
+	url(r'^articles/', include('articles.urls')),
+]
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^services/', include(service_patterns)),
 ]
