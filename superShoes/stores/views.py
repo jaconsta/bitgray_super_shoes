@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Store, Article
+from .models import Store
 
 def getStore(storeId):
     '''

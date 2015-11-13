@@ -38,12 +38,12 @@ def getAllArticles():
 ####################
 ####################
 
-def articleIndex(request):
+def index(request):
     '''
     General management of articles.
     '''
     if request.method == 'GET':
-        article = getAllStores()
+        article = getAllArticles()
         return JsonResponse({'success':True, 'articles': article, 
                              'total_elements': len(article)})
     else:
