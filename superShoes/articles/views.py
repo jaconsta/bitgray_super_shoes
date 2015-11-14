@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Article
 from stores.models import Store
 
+from middlewares.auth.basicAuth import basicauth
+
 def getStore(storeId):
     '''
     Check if the store exists and return it's object
@@ -38,6 +40,7 @@ def getAllArticles():
 ####################
 ####################
 
+@basicauth
 def index(request):
     '''
     General management of articles.
@@ -51,6 +54,7 @@ def index(request):
                              'error_code':400, 
                              'error_msg':'Request methos unavailable.'}, status=400)
 
+@basicauth
 def storeArticles(request, storeId):
     '''
     Load all the articles from a specific store.

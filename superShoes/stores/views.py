@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from .models import Store
 
+from middlewares.auth.basicAuth import basicauth
+
 def getStore(storeId):
     '''
     Check if the store exists and return it's object
@@ -26,7 +28,7 @@ def getAllStores():
 
 ####################
 ####################
-
+@basicauth
 def index(request):
     '''
     General management of stores.
