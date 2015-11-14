@@ -7,7 +7,21 @@ Api:
 * Urls follows REST syntax for web services. 
 * Responses are provided via JSON.
 
+This application can be accessed by two methods. API requests and management interfaces.
+
+API is used for accessing data cross-device.
+
+Admin is used to manage the information stored in the system.
+
 ## Instructions
+
+To access the API services:
+
+	/services/
+
+To access the information management:
+
+	/admin/
 
 ### API
 
@@ -26,9 +40,13 @@ In the project directory:
 
 	$ cd bitgray_superShoes/superShoes
 
-Create a database with name *supershoes* and run:
+To create the platform database:
 
     $ python manage.py migrate
+
+Create the default admin user for administration access and management:
+
+	$ pytnon manage.py createsuperuser
 
 To run the server locally:
 
